@@ -21,14 +21,20 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    @PutMapping("/{customerId}")
+    public ResponseEntity<Customer> handleUpdate(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
+        customerService.updateCustomer(customerId, customer);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody Customer customer){
+    public ResponseEntity<Customer> handlePost(@RequestBody Customer customer){
         Customer savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
 
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
