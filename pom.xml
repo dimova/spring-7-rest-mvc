@@ -14,7 +14,7 @@
     <name>spring-7-rest-mvc</name>
     <description>Spring 7 Rest MVC</description>
     <properties>
-        <java.version>25</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -67,19 +67,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-<!--            this configuration is needed for Java 23 and higher-->
-            <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-                <annotationProcessorPaths>
-                    <path>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                    </path>
-                </annotationProcessorPaths>
-            </configuration>
-        </plugin>
         </plugins>
     </build>
 

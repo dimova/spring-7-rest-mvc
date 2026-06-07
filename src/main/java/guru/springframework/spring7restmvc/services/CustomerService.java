@@ -20,5 +20,5 @@ public interface CustomerService {
 
     void deleteCustomerById(UUID customerId);
 
-    void patchCustomerById(UUID customerId, Customer customer);
+    void patchCustomerById(java.util.UUID customerId, Customer customer);
 }
