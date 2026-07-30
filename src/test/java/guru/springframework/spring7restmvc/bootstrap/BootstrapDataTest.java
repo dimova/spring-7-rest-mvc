@@ -26,7 +26,7 @@ class BootstrapDataTest {
     }
 
     @Test
-    void Testrun() throws Exception {
+    void testrun() throws Exception {
         bootstrapData.run(null);
 
         assertThat(beerRepository.count()).isEqualTo(3);

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by jt, Spring Framework Guru.
@@ -23,31 +24,45 @@ public class CustomerServiceJPA implements CustomerService {
 
     @Override
     public Optional<CustomerDTO> getCustomerById(UUID uuid) {
-        return Optional.empty();
+        return customerRepository.findById(uuid)
+                .map(customerMapper::customerToCustomerDto);
     }
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
-        return null;
+        return customerRepository.findAll()
+                .stream()
+                .map(customerMapper::customerToCustomerDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public CustomerDTO saveNewCustomer(CustomerDTO customer) {
-        return null;
+        return customerMapper.customerToCustomerDto(
+                customerRepository.save(customerMapper.customerDtoToCustomer(customer))
+        );
     }
 
     @Override
     public void updateCustomerById(UUID customerId, CustomerDTO customer) {
-
+        customerRepository.findById(customerId).ifPresent(existingCustomer -> {
+            existingCustomer.setName(customer.getName());
+            customerRepository.save(existingCustomer);
+        });
     }
 
     @Override
     public void deleteCustomerById(UUID customerId) {
-
+        customerRepository.deleteById(customerId);
     }
 
     @Override
     public void patchCustomerById(UUID customerId, CustomerDTO customer) {
-
+        customerRepository.findById(customerId).ifPresent(existingCustomer -> {
+            if (customer.getName() != null && !customer.getName().isBlank()) {
+                existingCustomer.setName(customer.getName());
+            }
+            customerRepository.save(existingCustomer);
+        });
     }
 }
