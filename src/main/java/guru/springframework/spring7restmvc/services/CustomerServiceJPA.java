@@ -37,21 +37,31 @@ public class CustomerServiceJPA implements CustomerService {
 
     @Override
     public CustomerDTO saveNewCustomer(CustomerDTO customer) {
-        return null;
+        return customerMapper.customerToCustomerDto(
+                customerRepository.save(customerMapper.customerDtoToCustomer(customer))
+        );
     }
 
     @Override
     public void updateCustomerById(UUID customerId, CustomerDTO customer) {
-
+        customerRepository.findById(customerId).ifPresent(existingCustomer -> {
+            existingCustomer.setName(customer.getName());
+            customerRepository.save(existingCustomer);
+        });
     }
 
     @Override
     public void deleteCustomerById(UUID customerId) {
-
+        customerRepository.deleteById(customerId);
     }
 
     @Override
     public void patchCustomerById(UUID customerId, CustomerDTO customer) {
-
+        customerRepository.findById(customerId).ifPresent(existingCustomer -> {
+            if (customer.getName() != null && !customer.getName().isBlank()) {
+                existingCustomer.setName(customer.getName());
+            }
+            customerRepository.save(existingCustomer);
+        });
     }
 }
